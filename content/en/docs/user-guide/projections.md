@@ -36,7 +36,9 @@ projections and obligations are not available in desktop offline mode.
 4. The **Already committed** card lists what you have already committed to pay in the
    period: a total, then each obligation with its kind (**Installment**, **Card
    statement** or **Commitment**), its due date and its amount. The API computes the
-   obligations as the remaining installments and the statements not yet settled.
+   obligations as the remaining installments and the statements not yet settled, so
+   its kinds are Installment and Statement only. **Commitment** is the interface's
+   label for a kind it does not recognize.
 5. Each of those two cards carries the word "Projected" in a tag, an outlined border,
    and the note "These figures are forecasts, not records. Nothing here is stored."
 

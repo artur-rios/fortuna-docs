@@ -45,8 +45,8 @@ sort and every page is a request to the API, which answers with just that page
    [Transactions and transfers]({{< relref "/docs/user-guide/transactions" >}})).
    Going back, you find the filters, sort and page as you left them.
 
-The top bar has an **Export** icon (see [Exports]({{< relref "/docs/user-guide/exports" >}}))
-and a **Record** button opens the record form.
+The top bar has an **Export** icon (see [Exports]({{< relref "/docs/user-guide/exports" >}})).
+A floating **Record** button opens the record form.
 
 Notable alternatives:
 

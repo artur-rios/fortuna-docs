@@ -53,13 +53,25 @@ until that is settled.
 5. On success the address is saved, the matching transport is chosen, and the
    sign-in screen follows.
 
-**Desktop offline mode.** On Windows and Linux, and only when the core library
-loads, the screen also offers **Use this device only** under the words "Your data
-stays on this computer. No instance, no network." It is not offered on the web or
-on Android, nor on a desktop installation without the core library. If the core
-library is present but fails to load, the screen says "This installation carries
-the Fortuna core but it could not be loaded, so offline mode is unavailable.
-Connect to an instance instead." and the connected path stays available.
+**Desktop offline mode** is entered in one of two ways, and only on Windows and
+Linux with a core library that loads.
+
+- **Built for it.** An application built with `FORTUNA_TRANSPORT_FFI` (the route
+  the [Installation]({{< relref "/docs/installation#offline-mode-windows-and-linux" >}})
+  page takes) starts directly in offline mode when the core loads. The instance
+  counts as chosen, so the setup screen never appears and you go straight to
+  sign-in.
+- **Chosen on the setup screen.** A desktop build that is not wired for offline
+  mode, has no instance address built in, and has a core library that loads shows
+  **Use this device only** on the setup screen, under the words "Your data stays on
+  this computer. No instance, no network."
+
+The option is never offered on the web or on Android, nor on a desktop installation
+without the core library. If a build wired for offline mode finds that the core
+library is present but will not load, it does not start offline. It falls back to
+the setup screen, which says "This installation carries the Fortuna core but it
+could not be loaded, so offline mode is unavailable. Connect to an instance
+instead." and the connected path stays available.
 
 The three modes are *Connected* (the address came from the build), *Self-hosted*
 (you typed the address on this screen) and *Desktop offline*. The difference you

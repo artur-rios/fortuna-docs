@@ -62,7 +62,8 @@ and
 The details:
 
 - Until an instance address has been chosen, every address sends you to
-  `/setup`, even the sign-in screen.
+  `/setup`, even the sign-in screen. A build made for desktop offline mode counts as
+  chosen from the start and never shows the setup screen.
 - A signed-out request for a protected address goes to `/sign-in`, and the
   address you wanted is remembered. After you sign in you are taken there if
   your role may reach it.
@@ -85,7 +86,9 @@ flowchart TD
     C -- "No" --> D{"Signed-out screen?"}
     D -- "Yes" --> OK["The screen opens"]
     D -- "No" --> L["/sign-in, destination remembered"]
-    C -- "Yes" --> R{"Role"}
+    C -- "Yes" --> Q{"Signed-out screen?"}
+    Q -- "Yes" --> W["Sent to the remembered destination, otherwise home"]
+    Q -- "No" --> R{"Role"}
     R -- "Account owner" --> O{"Administrative address?"}
     O -- "Yes" --> H1["Sent to /"]
     O -- "No" --> OK

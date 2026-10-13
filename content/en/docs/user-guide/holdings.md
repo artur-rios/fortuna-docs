@@ -77,13 +77,14 @@ Notable alternatives:
    follows.
 2. Press **New card**. The dialog "New card" asks for a **Name**, an **Issuer
    (optional)**, **Last four digits (optional)**, a **Currency**, a **Credit
-   limit**, a **Closing day** and a **Due day**.
+   limit**, a **Closing day** and a **Due day**. The last four digits and the
+   currency are asked for only when creating a card.
 3. The form checks that the limit is greater than zero and that both days are
    between 1 and 31: "The credit limit must be greater than zero." and "The closing
    day must be 1 to 31." (the due day likewise). Whether a closing and due day
    combination makes sense is the API's to answer.
-4. Press **Create**. To change a card, tap it for "Edit card" (the currency is not
-   offered there), and **Delete** removes it.
+4. Press **Create**. To change a card, tap it for "Edit card" (the last four digits and
+   the currency are not offered there), and **Delete** removes it.
 
 Notable alternatives:
 
