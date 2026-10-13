@@ -73,7 +73,7 @@ flowchart TB
     jobs --> ptax
 ```
 
-Read the diagram from the left.
+Read the diagram from the top.
 
 - A feature never knows how its data arrives. It talks to a repository, and each
   repository has one implementation per transport: HTTP, or FFI into the native
@@ -100,58 +100,71 @@ and return a `DataOutput` envelope that the controllers map to an HTTP status.
 | Domain | `ArturRios.Fortuna.Domain` | Entities, money, billing cycles, invariants. |
 | Application | `ArturRios.Fortuna.Command` | Write handlers and validators. |
 | Application | `ArturRios.Fortuna.Query` | Read handlers and read models. |
-| Application | `ArturRios.Fortuna.Shared` | Currency conversion and ownership checks. |
-| Infrastructure | `ArturRios.Fortuna.Data` | The EF Core `AppDbContext`, entity maps, PostgreSQL migrations and seeding. |
+| Application | `ArturRios.Fortuna.Shared` | The interfaces the handlers use to reach persistence (the stores, such as `IFinancialAccountStore`), the job queue, the messages, currency conversion and ownership checks. |
+| Infrastructure | `ArturRios.Fortuna.Data` | The EF Core `AppDbContext`, entity maps, PostgreSQL migrations and seeding. It implements the store interfaces. |
 | Infrastructure | `ArturRios.Fortuna.Data.Sqlite.Migrations` | The EF Core migration set for SQLite. |
 | Infrastructure | `ArturRios.Fortuna.Integration` | Excel and Nubank PDF parsers, Pluggy gateways, the source registry, the PTAX rate client, the export renderer, attachment storage and the Heimdall gateway. |
-| Presentation | `ArturRios.Fortuna.WebApi` | The ASP.NET Core host: controllers, security, OpenAPI and observability. |
+| Presentation | `ArturRios.Fortuna.WebApi` | The ASP.NET Core host: controllers, security, OpenAPI, observability and the background job runner. |
 
 ```mermaid
 flowchart TD
     subgraph Presentation
-        webapi["WebApi<br/>host, controllers, security"]
+        webapi["WebApi<br/>composition root: host, controllers, security,<br/>background job runner"]
     end
     subgraph Application
         command["Command<br/>write handlers, validators"]
         query["Query<br/>read handlers, read models"]
-        shared["Shared<br/>conversion, ownership checks"]
+        shared["Shared<br/>store interfaces, job queue, messages,<br/>conversion, ownership checks"]
     end
     subgraph Domain
         domain["Domain<br/>entities, money, billing cycles"]
     end
     subgraph Infrastructure
-        data["Data<br/>DbContext, maps, migrations"]
+        data["Data<br/>DbContext, maps, migrations,<br/>implements the stores"]
+        sqlite["Data.Sqlite.Migrations<br/>SQLite migration set"]
         integration["Integration<br/>Pluggy, PTAX, parsers, exporters, storage"]
-        jobs["Job runner<br/>hosted service and queue"]
-        db[("PostgreSQL")]
-        store["Filesystem or S3-compatible store"]
     end
+    db[("PostgreSQL")]
+    store["Filesystem or S3-compatible store"]
 
     webapi --> command
     webapi --> query
-    webapi --> jobs
-    command --> domain
-    query --> domain
+    webapi --> data
+    webapi --> sqlite
+    webapi --> integration
     command --> shared
+    command --> domain
     query --> shared
-    command --> data
-    query --> data
-    jobs --> command
-    jobs --> integration
-    integration --> domain
-    integration --> store
+    query --> domain
+    data --> shared
     data --> domain
+    integration --> shared
+    integration --> domain
+    sqlite --> data
+    shared --> domain
     data --> db
+    integration --> store
 ```
 
-The arrow that is missing on purpose is `Integration` to `Data`. A parser or an
-aggregator client returns domain-shaped results and hands them to a command
-handler, which is the code that saves them. Keeping the arrow out is what stops
-a statement parser from gaining the ability to write a row.
+The diagram follows the projects' references in the solution. The Operations &
+Infrastructure Document draws this differently (handlers pointing straight at
+`Data`, and the job runner under Infrastructure); the code is what is shown here.
 
-Background work runs as a hosted service reading a bounded in-memory queue, with a
-durable job table behind it. Jobs left pending or running when the process stops
-are queued again at start-up. Imports, synchronizations and exports all use it.
+- **`WebApi` is the composition root.** It is the only project that references
+  `Data` and `Integration`, and it registers their implementations of the `Shared` interfaces at
+  start-up.
+- **Handlers reach persistence through interfaces.** `Command` and `Query` know
+  only `Domain` and `Shared`. They call the store interfaces in `Shared`, and
+  `Data` implements them.
+- **`Integration` does not reference `Data`**, on purpose. A parser or an
+  aggregator client returns domain-shaped results and hands them to a command
+  handler, which is the code that saves them. Keeping that arrow out is what stops
+  a statement parser from gaining the ability to write a row.
+
+Background work runs as a hosted service in `WebApi` that reads a bounded
+in-memory queue (the queue itself is in `Shared`), with a durable job table behind
+it. Jobs left pending or running when the process stops are queued again at
+start-up. Imports, synchronizations and exports all use it.
 
 ### The native core
 
@@ -462,8 +475,15 @@ sequenceDiagram
     C-->>UI: ready
     UI->>C: create a local account
     C-->>UI: recovery codes, shown once
-    UI->>C: authenticate (name, secret)
-    C-->>UI: opaque local token
+    alt the user knows the secret
+        UI->>C: authenticate (name, secret)
+        C-->>UI: opaque local token
+    else the secret is lost
+        UI->>C: recover (name, one recovery code)
+        C-->>UI: code spent, token
+        UI->>C: set a new secret
+        C-->>UI: offer to regenerate the codes
+    end
     Note over UI: keeps the token in secure storage
     UI->>C: any later call, with the token in the request
     Note over C: checks the token against its hashed session registry.<br/>No network, no Heimdall.
@@ -473,9 +493,15 @@ sequenceDiagram
 - The token is opaque. The core stores only its SHA-256 hash, the token expires
   after the configured lifetime, and every token is invalidated when the core
   shuts down. A stored session that the core cannot verify offline is discarded.
-- A local account has no password reset and no email recovery. Recovery codes are
-  issued once, when the account is created, and each can be used once.
-- There is no sign-up offline: the local account has its own creation path.
+- A local account has no password reset and no email recovery. A recovery code is
+  the only way back into the account if the secret is lost
+  ([UC-08, API-BR-36]({{< relref "/docs/concepts#identity-connected-and-local-accounts" >}})).
+  The codes are issued once, when the account is created, and each can be used
+  once. Using one spends it, the UI says how many remain, and after the user sets a
+  new secret it offers to regenerate the set. If every code is spent, the account
+  cannot be recovered.
+- The connected sign-up flow does not apply offline. A local account is made
+  through its own creation path, shown above.
 
 ## Chart drill-down
 
@@ -556,9 +582,17 @@ the [native core README](https://github.com/artur-rios/fortuna-api/blob/develop/
 | Goal progress | Progress is not computed natively. |
 | Reconciliation | It needs imported records, which the native core does not create. |
 
-The core's list also covers two operations that the UI README does not name:
-retrying an import job (the same reason as file imports) and materializing
-recurring transactions (occurrences are not materialized natively).
+The core's list also covers three operations that the UI README does not name.
+
+- **Retrying an import job** has the same reason as file imports. The UI's own
+  list of offline gaps includes it, so it is shown as not available offline.
+- **Materializing recurring transactions** is not available because occurrences
+  are not materialized natively. The UI lists this too.
+- **`POST /api/reports/table`**, the generic table query, also answers `501`
+  ("reports are not computed natively"). The UI has a generated client for it but
+  no screen calls it, and it keeps no entry for it in its list of offline gaps, so
+  a reader sees nothing different. The transactions spreadsheet loads through
+  `GET /api/transactions`, which the core implements.
 
 A few more points complete the picture.
 
