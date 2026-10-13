@@ -163,6 +163,17 @@
   }
 }
 
+// Swagger UI's method badges put white 12px bold text on pale fills (GET 2.3:1, POST 2.0:1,
+// PUT 2.0:1, DELETE 3.6:1, PATCH 1.6:1). Darker fills of the same hues pass WCAG AA (4.5:1).
+// Light mode only: in dark mode the inversion above already yields dark badges.
+:root:not([data-bs-theme='dark']) .fortuna-swagger .swagger-ui .opblock {
+  &.opblock-get .opblock-summary-method { background: #0b6bcb; }    // 5.28:1
+  &.opblock-post .opblock-summary-method { background: #18794e; }   // 5.41:1
+  &.opblock-put .opblock-summary-method { background: #b04a00; }    // 5.49:1
+  &.opblock-delete .opblock-summary-method { background: #c42b2b; } // 5.63:1
+  &.opblock-patch .opblock-summary-method { background: #00766c; }  // 5.51:1
+}
+
 // Colour: Swagger UI ships no dark theme, and restyling several hundred of its selectors would be a
 // standing maintenance cost for one embedded widget. Inverting it and rotating the hues back gives a
 // dark widget whose colours (the green POST, the red DELETE) survive, at the price of a second
