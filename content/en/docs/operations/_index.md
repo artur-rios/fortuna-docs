@@ -281,7 +281,9 @@ rolled daily under `FORTUNA_LOG_DIRECTORY/<yyyy>/<MM>/` as
 - **Levels.** The minimum level is `Information`. Framework namespaces
   (`Microsoft`, `Microsoft.EntityFrameworkCore`, `System.Net.Http.HttpClient`) are
   held at `Warning`, because their `Information` events are per-request noise
-  the request logging already summarizes. Any level can be changed through the
+  the request logging already summarizes. The exception is
+  `Microsoft.Hosting.Lifetime`, which stays at `Information` so that start-up and
+  shutdown are logged (`FortunaLogging.cs`). Any level can be changed through the
   standard `Serilog` configuration section, for example the environment variable
   `Serilog__MinimumLevel__Override__Microsoft.EntityFrameworkCore=Information`.
   There is no `FORTUNA_LOG_LEVEL`.

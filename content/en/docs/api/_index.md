@@ -15,7 +15,7 @@ The list of endpoints follows that OpenAPI document, which is generated from the
 code. The [System Requirements Document](https://github.com/artur-rios/fortuna-api/blob/develop/docs/requirements/System%20Requirements%20Document.md)
 describes the intended surface and differs from the real one in places (it lists
 `PUT /api/me`, which does not exist), so when the two disagree this page follows
-the document and the code. The counts below were taken from the document on
+the OpenAPI document and the code. The counts below were taken from the document on
 fortuna-api's `main` branch on 2026-10-13, the release v2.1.0 of the API.
 
 ## Authentication

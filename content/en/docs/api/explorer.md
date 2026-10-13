@@ -2,7 +2,7 @@
 title: API explorer
 linkTitle: API explorer
 weight: 20
-description: Swagger UI over fortuna-api's OpenAPI document — every endpoint, its schema, and its authorization.
+description: Swagger UI over fortuna-api's OpenAPI document — every endpoint and its schema.
 ---
 
 Every endpoint the API exposes, rendered from
