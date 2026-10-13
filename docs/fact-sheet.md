@@ -826,10 +826,9 @@ UI: 60 fps, no frame > 16 ms; paint < 100 ms after response; cold start < 3 s de
 ### Released versions
 | Repo | Tags (`git tag`) | GitHub releases (`gh release list`) | Changelog |
 |---|---|---|---|
-| fortuna-api | `v1.0.0`, `v2.0.0` | `v2.0.0` Latest, 2026-10-12T23:08:39Z (no assets); **no GitHub release for v1.0.0** ("release not found") | [1.0.0] 2026-09-19; [2.0.0] 2026-10-12; [2.1.0] 2026-10-13 on develop / release/2.1.0 (A:CHANGELOG) |
+| fortuna-api | `v1.0.0`, `v2.0.0`, `v2.1.0` | `v2.1.0` Latest, 2026-10-13T17:21:03Z (no assets); `v2.0.0`, 2026-10-12T23:08:39Z (no assets); **no GitHub release for v1.0.0** ("release not found") | [1.0.0] 2026-09-19; [2.0.0] 2026-10-12; [2.1.0] 2026-10-13 (A:CHANGELOG) |
 | fortuna-ui | `v1.0.0` | `v1.0.0` Latest, 2026-10-12T22:25:36Z (no assets) | [1.0.0] 2026-10-12; [Unreleased] adds UC-47 sign-up (U:CHANGELOG) |
-- fortuna-api **2.1.0 is in flight**: open PR #212 "release: v2.1.0" (`release/2.1.0` → `main`), opened
-  2026-10-13; not yet tagged (`gh pr list`). 2.1.0 = UC-81 register, verify-email password, caller key,
+- fortuna-api **v2.1.0 released 2026-10-13** (Latest), from PR #212 "release: v2.1.0" (`release/2.1.0` → `main`). 2.1.0 = UC-81 register, verify-email password, caller key,
   429 mapping, IPv6 /64 limiter (A:CHANGELOG [2.1.0]).
 - 2.0.0 was **major** because of the breaking native C ABI change (`501` + `notImplemented`) (A:CHANGELOG [2.0.0]; A:CONTRIBUTING "Versioning").
 - Independent version numbers: API contract `v1` (OpenAPI `info.version`), native crate `0.1.0`, UI
@@ -931,13 +930,13 @@ and `%26` for `&` (the READMEs use `%26`; the API returned a raw `&`).
 
 **Versions and status**
 1. **API README status is stale.** It says "version 1.0.0 is released" on main, develop and
-   release/2.1.0, while tags `v1.0.0` and `v2.0.0` exist, GitHub release `v2.0.0` is Latest, and 2.1.0 is
-   pending in open PR #212 (A:README line 9; `git tag`; `gh release list`; `gh pr list`). The README
+   release/2.1.0, while tags `v1.0.0`, `v2.0.0` and `v2.1.0` exist and GitHub release `v2.1.0` is Latest
+   (A:README line 9; `git tag`; `gh release list`). The README
    roadmap also says closed counts are "as of the 1.0.0 release".
 2. **API v1.0.0 has a tag but no GitHub release** (`gh release view v1.0.0` → "release not found"), while
    CHANGELOG links `[1.0.0]` to `/releases/tag/v1.0.0`.
 3. **"2.1.0" question resolved:** branch `release/2.1.0` and `feature/changelog-2.1.0` exist; develop's
-   CHANGELOG has `## [2.1.0] - 2026-10-13`; not yet tagged or released. Treat 2.0.0 as latest released API version.
+   CHANGELOG has `## [2.1.0] - 2026-10-13`; v2.1.0 has since been tagged and released (Latest, 2026-10-13). Treat 2.1.0 as the latest released API version.
 4. **API README roadmap M-02 says 16 issues / "16 / 16 closed"**, but its own backlog table lists 17 rows
    and GitHub shows 17 closed (UC-81 #208 added) (A:README Roadmap vs Backlog; milestones API).
 5. **UI README status says "44 of the 47 issues are closed"**; GitHub has 45 closed + 3 open = 48 (UC-47
