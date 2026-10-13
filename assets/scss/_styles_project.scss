@@ -110,6 +110,18 @@
   padding-top: 0;
 }
 
+// --- Section menu on small screens ---------------------------------------------
+//
+// Docsy pulls the collapsible section menu out by 15px on each side to cancel the sidebar's
+// padding, but Bootstrap 5.3's gutter is 12px, so with the menu open it is 6px wider than the
+// viewport and the page can be panned sideways by 3px. Match the pull to the real gutter.
+@include media-breakpoint-down(md) {
+  .td-sidebar-nav {
+    margin-left: -12px;
+    margin-right: -12px;
+  }
+}
+
 // --- Wide tables ----------------------------------------------------------
 //
 // Several reference tables (the endpoint listings, the environment-variable table) are wider than
