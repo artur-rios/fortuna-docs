@@ -63,14 +63,17 @@ The details:
 
 - Until an instance address has been chosen, every address sends you to
   `/setup`, even the sign-in screen. A build made for desktop offline mode counts as
-  chosen from the start and never shows the setup screen.
+  chosen from the start and starts past setup, and so does a build with an instance
+  address built in. A signed-out user can still open `/setup` by its address on any
+  build.
 - A signed-out request for a protected address goes to `/sign-in`, and the
   address you wanted is remembered. After you sign in you are taken there if
   your role may reach it.
 - A pending two-factor challenge counts as signed out.
 - A signed-in user who opens one of the signed-out screens is sent to the
-  remembered destination if there is one, and otherwise home: `/` for an account
-  owner, `/admin` for an administrator.
+  remembered destination if there is one. The destination is checked again for the
+  role, so one the role may not reach is ignored. Otherwise the user goes home: `/`
+  for an account owner, `/admin` for an administrator.
 - An address that matches no screen shows "No screen at" followed by the address,
   with a "Go to the overview" button. This applies to account owners; a signed-in
   administrator is redirected to `/admin` instead, and a signed-out user to
@@ -87,7 +90,9 @@ flowchart TD
     D -- "Yes" --> OK["The screen opens"]
     D -- "No" --> L["/sign-in, destination remembered"]
     C -- "Yes" --> Q{"Signed-out screen?"}
-    Q -- "Yes" --> W["Sent to the remembered destination, otherwise home"]
+    Q -- "Yes" --> M{"Remembered destination the role may reach?"}
+    M -- "Yes" --> W["Sent to the remembered destination"]
+    M -- "No or none" --> HM["Sent home: / or /admin"]
     Q -- "No" --> R{"Role"}
     R -- "Account owner" --> O{"Administrative address?"}
     O -- "Yes" --> H1["Sent to /"]

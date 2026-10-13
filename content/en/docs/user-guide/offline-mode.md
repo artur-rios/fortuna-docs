@@ -12,9 +12,8 @@ It is available only on Windows and Linux, and only when the core library loads.
 it is built is on the [Architecture]({{< relref "/docs/architecture#desktop-offline" >}})
 page, and how to build and start it is in
 [Installation]({{< relref "/docs/installation#offline-mode-windows-and-linux" >}}). You
-get into it in one of two ways: a build made for it starts there directly, and an
-ordinary desktop build with a loadable core offers **Use this device only** on the
-setup screen (see
+get into it in one of two ways: a build made for it starts there directly, and the
+setup screen offers **Use this device only** wherever the core loads (see
 [Signing in]({{< relref "/docs/user-guide/signing-in#uc-01-configure-the-instance-and-mode" >}})).
 
 The core is a work in progress. It does not implement everything the API does yet, so
@@ -25,7 +24,7 @@ this page shows where each item appears in the interface.
 
 | Address | Screen |
 | --- | --- |
-| `/setup` | Set up your instance: offers "Use this device only" on a desktop build that did not start offline; a build made for offline mode never shows it |
+| `/setup` | Set up your instance: offers "Use this device only" wherever the core loads. A build made for offline mode starts past it, but a signed-out user can still open it |
 | Local-account screens | None: no route opens them (see UC-06 to UC-08 below) |
 
 ## What works
