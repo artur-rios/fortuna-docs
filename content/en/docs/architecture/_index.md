@@ -278,8 +278,9 @@ flowchart TB
   must be HTTPS. Each environment therefore uses its own Heimdall's public host.
 
 On a developer's machine the same compose file runs the API alone, without
-Traefik, on `http://localhost:8083`. The Installation and Operations sections
-cover the commands and the settings.
+Traefik, on `http://localhost:8083`. The [Installation]({{< relref "/docs/installation" >}}) and
+[Operations]({{< relref "/docs/operations" >}}) sections cover the commands and the
+settings.
 
 ### Desktop offline
 
@@ -312,7 +313,8 @@ flowchart LR
   `400`. See [Offline mode]({{< relref "/docs/installation#offline-mode-windows-and-linux" >}}).
 - The user signs in with a local account that Fortuna owns, because there is no
   network to reach Heimdall over. See
-  [Offline: the local account](#offline-the-local-account).
+  [Offline: the local account](#offline-the-local-account), which also says what
+  the interface does not yet offer for it.
 
 The API can also run on SQLite on its own, as an alternative local deployment,
 by setting `FORTUNA_DATA_DATABASETYPE` to `SQLite`. That is still the .NET API
@@ -389,7 +391,10 @@ What the diagram shows:
    and imports nothing. A failed Excel or Pluggy import commits none of its rows.
 6. **The UI only watches.** It uploads the file whole, then reads the job and
    its per-row records from the API and shows each outcome as reported
-   ([UI-BR-28 and UI-BR-31]({{< relref "/docs/concepts#imports" >}})).
+   ([UI-BR-28 and UI-BR-31]({{< relref "/docs/concepts#imports" >}})). As built,
+   its file-import screen sends only the file, while the API also requires a
+   target and, for a workbook, a column mapping; see
+   [Imports and connections]({{< relref "/docs/user-guide/imports#uc-32-import-a-file" >}}).
 
 A job that failed can be retried. The retry treats whatever the earlier attempt
 already imported as a duplicate, so nothing is imported twice. In desktop offline
@@ -505,6 +510,16 @@ sequenceDiagram
   cannot be recovered.
 - The connected sign-up flow does not apply offline. A local account is made
   through its own creation path, shown above.
+
+{{% alert title="The interface does not reach these screens yet" color="warning" %}}
+The sequence above is what the core and the UI's local-account screens are built
+to do. The screens for creating a local account, signing in to it and recovering
+it (UC-06, UC-07 and UC-08) exist and have tests, but no route registers or
+opens them, and no screen links to them. In the code as it stands, a person
+cannot create or use a local account from the interface. See
+[Offline mode]({{< relref "/docs/user-guide/offline-mode#uc-06-create-a-desktop-local-account" >}})
+in the [User guide]({{< relref "/docs/user-guide" >}}).
+{{% /alert %}}
 
 ## Chart drill-down
 

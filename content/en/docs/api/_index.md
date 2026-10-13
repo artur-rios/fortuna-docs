@@ -75,9 +75,14 @@ is the place to find them.
 | `POST /api/local-accounts` | Create the desktop local account. | No |
 | `POST /api/local-accounts/authenticate` | Sign in to the local account. | Yes |
 | `POST /api/local-accounts/recover` | Spend a recovery code to regain access. | Yes |
-| `POST /api/local-accounts/password-reset` | Always refuses: a local account has no password reset. | No |
+| `POST /api/local-accounts/password-reset` | Always refuses with `404`: a local account has no password reset. With local authentication on, the message is `PasswordResetUnavailable`. | No |
 
 The local-account routes answer `404` when local authentication is turned off.
+`POST /api/local-accounts/password-reset` answers `404` whether it is on or off
+(`PasswordResetUnavailable` when on). Regenerating recovery codes with
+`POST /api/local-accounts/recovery-codes/regenerate` for an account that is not
+a local account also answers `404`
+(`LocalRecoveryCodeRegenerationMessages.LocalAccountOnly`).
 The credential routes give one
 `401` for any rejected credential, so a response never reveals whether an
 account exists.
@@ -135,7 +140,12 @@ For example, a refused request:
 
 A few responses are not wrapped in it: the two health routes return their own
 report, and the responses that are files (a data export, an attachment, a
-finished personal-data archive) return the file.
+finished personal-data archive) return the file. A file comes back unwrapped
+only when the request succeeds and a file is there to return. When it does not,
+as when the export or personal-data archive is not ready yet or the request is
+refused, the response is the ordinary envelope: this is true of the export
+retrieval route (`GET /api/exports/{id}`), `GET /api/me/data-export/{jobId}`
+and the attachment download alike.
 
 ## Errors
 
@@ -193,10 +203,16 @@ The transaction search differs: its `data` is an object holding `items`,
 `pageNumber`, `pageSize`, `totalItems`, `totalPages` and `totals`, the sums over
 the whole matching set.
 
-The reports have their own parameters rather than paging: an aggregate takes a
+The reports have their own parameters as well: an aggregate takes a
 `Dimension` (period, category, account, card, counterparty or tag), a
 `Granularity` and a date range, and a drill-down takes the `Key` of the group to
-open; the explorer lists the rest.
+open; the explorer lists the rest. The explorer also lists `PageNumber` and
+`PageSize` on `/api/reports/aggregate`, `/api/reports/drill-down`,
+`/api/reports/net-position` and `/api/projections/cash-flow` and
+`/api/projections/commitments`, but the aggregate, net-position and projection
+outputs are not paged. Only the drill-down pages its `transactions`
+(`TransactionDrillDownOutput` carries `pageNumber`, `pageSize`, `totalItems` and
+`totalPages`).
 
 ## Rate limiting
 
@@ -219,8 +235,9 @@ window, with no queue. The eleventh request in a window is answered with
 - **Authenticated routes have no limit** in the API. Outbound calls to other
   services back off and respect those services' own limits.
 
-The proxy and caller-key settings belong to Operations, which is not written
-yet.
+The proxy and caller-key settings are under
+[Reverse proxy and client addresses]({{< relref "/docs/operations#reverse-proxy-and-client-addresses" >}})
+on the [Operations]({{< relref "/docs/operations" >}}) page.
 
 ## Endpoint groups
 

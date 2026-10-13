@@ -148,9 +148,10 @@
 }
 
 // The explorer removes Swagger UI's Authorize button (see content/en/docs/api/explorer.md): there is
-// no server behind the page, so a token could never be attached to anything. The per-operation
-// padlocks stay, because which endpoints need a token is worth reading — but clicking one opens the
-// same authorization dialog the button would have, so they are demoted to indicators.
+// no server behind the page, so a token could never be attached to anything. If the document
+// declares per-operation security, Swagger UI draws a padlock on each operation, and clicking one
+// opens the same authorization dialog the button would have; this rule makes those padlocks inert,
+// demoting them to indicators.
 .fortuna-swagger .swagger-ui .authorization__btn {
   pointer-events: none;
   cursor: default;

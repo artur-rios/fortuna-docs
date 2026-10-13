@@ -229,10 +229,10 @@ maps for the Docker engine on Linux.
    ```
 
 {{% alert title="This local setup is not a way to sign in to the UI" color="warning" %}}
-The local account serves the API's own local-account endpoints and desktop
-offline mode. The web, Android and desktop UI, when connected to an API, sign in
-through Heimdall (`/api/auth/*`); the UI has no local sign-in for a connected
-instance. With the placeholder Heimdall settings of the local example, the API
+The local account serves the API's own local-account endpoints. The web,
+Android and desktop UI, when connected to an API, sign in through Fortuna's
+`/api/auth/*`, which signs in with Heimdall; the UI has no local sign-in for a
+connected instance. With the placeholder Heimdall settings of the local example, the API
 runs and answers, but a connected UI cannot sign in to it. To sign in, follow
 [Connecting to Heimdall](#connecting-to-heimdall). For a working UI without
 Heimdall, use [Offline mode](#offline-mode-windows-and-linux), which needs no API.
@@ -247,7 +247,8 @@ machine. The Compose healthcheck calls `/healthcheck` every 15 seconds.
 The `development`, `homologation` and `production` env examples
 (`docker/<environment>.env.example`) are for the project's own servers, which
 run this same Compose file under yggdrasil with a Traefik overlay. That setup is
-described in Operations, which is planned for this site.
+described under [Environments]({{< relref "/docs/operations#environments" >}}) on
+the [Operations]({{< relref "/docs/operations" >}}) page.
 
 ### Option B: from source, on SQLite
 
@@ -287,8 +288,8 @@ dotnet run --project src/Presentation/ArturRios.Fortuna.WebApi --no-launch-profi
 ```
 
 This instance signs in with the local account, which serves the API's own
-local-account endpoints. The UI, connected to an API, signs in through Heimdall
-instead (see the note under [Option A](#option-a-docker-compose)), so this
+local-account endpoints. The UI, connected to an API, signs in through Fortuna's
+`/api/auth/*`, which signs in with Heimdall, instead (see the note under [Option A](#option-a-docker-compose)), so this
 instance is good for the API and Swagger UI. For a UI without Heimdall, use
 [Offline mode](#offline-mode-windows-and-linux). To sign in through Heimdall,
 see [Connecting to Heimdall](#connecting-to-heimdall).
@@ -387,7 +388,8 @@ compiled into the build, so they are **public**: never put a secret in one.
 | `FORTUNA_TRANSPORT_FFI` | `true` selects desktop offline mode (the core in process). Absent or `false`, the UI uses HTTP. |
 | `FORTUNA_DB_PATH` | Offline mode only: where the SQLite database file lives. |
 
-A connected UI signs in through Heimdall, so a connected run needs an API that
+A connected UI signs in through Fortuna's `/api/auth/*`, which signs in with
+Heimdall, so a connected run needs an API that
 is connected to a Heimdall over HTTPS ([Connecting to
 Heimdall](#connecting-to-heimdall)). An API run with the local example's
 placeholder Heimdall settings and the local account will start and answer, but
@@ -482,8 +484,10 @@ core library next to the UI.
 4. The core creates the database file and its folder when it first starts.
 
 Offline mode is offered only where the library loads. If the library is missing
-or will not load, the app falls back to the setup screen, where it reports the
-failure and offers to connect to an instance instead. Offline, the UI signs in
+or will not load and no `FORTUNA_API_BASE_URL` is built in, the app falls back to
+the setup screen, where it reports the failure and offers to connect to an
+instance instead. With a `FORTUNA_API_BASE_URL` built in, the app starts
+connected at that address instead. Offline, the UI signs in
 with a local account that Fortuna owns instead of Heimdall: see
 [Offline: the local account]({{< relref "/docs/architecture#offline-the-local-account" >}}).
 Some features are not available offline yet; the list is under
@@ -582,10 +586,18 @@ that Heimdall's signing secret if you sign in through it.
 
 - The [Architecture]({{< relref "/docs/architecture" >}}) page shows how the parts
   fit together, including both deployment modes.
-- The User guide, the API reference, Operations and Development sections are
-  planned for this site. Until they exist, the repositories hold the details:
-  the [fortuna-api README](https://github.com/artur-rios/fortuna-api#readme),
+- The [User guide]({{< relref "/docs/user-guide" >}}) describes the interface,
+  use case by use case, and the [API reference]({{< relref "/docs/api" >}}) maps
+  the endpoints.
+- [Operations]({{< relref "/docs/operations" >}}) covers the environments,
+  health checks, logging and metrics of a running instance, and
+  [Development]({{< relref "/docs/development" >}}) how the project is built and
+  tested.
+- The repositories hold the source documents: the
+  [fortuna-api README](https://github.com/artur-rios/fortuna-api#readme),
   the [fortuna-ui README](https://github.com/artur-rios/fortuna-ui#readme) and
-  the
-  [Operations & Infrastructure Documents](https://github.com/artur-rios/fortuna-api/blob/develop/docs/requirements/Operations%20%26%20Infrastructure%20Document.md)
-  of both.
+  the Operations & Infrastructure Documents
+  ([API](https://github.com/artur-rios/fortuna-api/blob/develop/docs/requirements/Operations%20%26%20Infrastructure%20Document.md),
+  [UI](https://github.com/artur-rios/fortuna-ui/blob/develop/docs/requirements/Operations%20%26%20Infrastructure%20Document.md)).
+  The [Repositories]({{< relref "/docs/repositories" >}}) page lists
+  every one.

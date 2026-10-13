@@ -21,8 +21,7 @@ see the [API reference](../).
 
 {{% alert title="The explorer cannot show who may call what" color="warning" %}}
 The OpenAPI document marks no operation as anonymous or as secured, so the
-explorer's padlocks cannot tell a public route from a protected one (and none
-is shown). The anonymous routes are listed on the
+explorer's padlocks cannot tell a public route from a protected one. The anonymous routes are listed on the
 [API reference]({{< relref "/docs/api#anonymous-routes" >}}), checked against the code.
 {{% /alert %}}
 

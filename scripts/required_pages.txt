@@ -23,3 +23,6 @@ docs/user-guide/data-rights/
 docs/user-guide/offline-mode/
 docs/api/
 docs/api/explorer/
+docs/operations/
+docs/development/
+docs/repositories/

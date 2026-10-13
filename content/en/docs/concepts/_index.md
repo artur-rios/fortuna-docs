@@ -225,7 +225,10 @@ soft-deleted records are not counted.
 
 **Goals** are savings targets: a target amount above zero, a target date that is
 in the future when the goal is created, and the accounts or investments linked to
-it. Progress is measured from the current balances of the linked accounts.
+it. Progress is measured from the balances of the linked accounts and the
+positions of the linked investments as of the date asked, each converted to the
+goal's currency. A deleted account or investment is left out, and when a needed
+exchange rate is missing the current total is not computed.
 
 - [API-BR-23](https://github.com/artur-rios/fortuna-api/blob/develop/docs/initial/Business%20Rules.md): a category has at most one parent, and the hierarchy has no cycle.
 

@@ -18,7 +18,7 @@ setup screen offers **Use this device only** wherever the core loads (see
 
 The core is a work in progress. It does not implement everything the API does yet, so
 some screens say so instead of working. The complete, reasoned list is on the
-Architecture page under
+[Architecture]({{< relref "/docs/architecture" >}}) page under
 [What offline mode does not support yet]({{< relref "/docs/architecture#what-offline-mode-does-not-support-yet" >}});
 this page shows where each item appears in the interface.
 
@@ -31,7 +31,7 @@ this page shows where each item appears in the interface.
 
 Everything the core implements works as it does online, with no change to the
 screens. By reading the lists of what the core does not implement and does not export
-(see Architecture), these work offline:
+(see [Architecture]({{< relref "/docs/architecture" >}})), these work offline:
 
 - financial accounts, credit cards (but not their statements), investments with
   their movements and valuations;
@@ -130,7 +130,7 @@ hidden. By reading the code, submitting it offline gets "This is not available
 offline: POST /api/auth/login.", because the core does not export Heimdall sign-in.
 So in this version a person cannot create or use a local account from the interface.
 The intended flow, which the screens implement, is described here and on the
-Architecture page under
+[Architecture]({{< relref "/docs/architecture" >}}) page under
 [Offline: the local account]({{< relref "/docs/architecture#offline-the-local-account" >}}).
 
 The screen is titled "Create a local account" and says "This account exists only on

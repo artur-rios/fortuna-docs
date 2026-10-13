@@ -686,7 +686,7 @@ Erase the Account; UC-45 View Instance Health (admin only).
 - Global fallback policy `RequireAuthenticatedUser()`; anonymous endpoints marked `[AllowAnonymous]`
   (A:`src/Presentation/.../Extensions/FortunaWebApiServiceCollectionExtensions.cs`; A:SRD NFR-10).
 - Anonymous: `/healthcheck`, local-account create/authenticate/recover (desktop mode only — `404` when
-  local auth disabled), and the anonymous `api/auth` exchanges (login, google, 2fa/verify,
+  local auth disabled) and `POST /api/local-accounts/password-reset` (always `404`), and the anonymous `api/auth` exchanges (login, google, 2fa/verify,
   2fa/challenge/resend, password-recovery, password-reset, register, verify-email) (A:SRD §5.1, FR-ID-15; A:UCS §1.1).
 - Authorization matrix (A:SRD §7): Account Owner and Local Account: full CRUD on own records, reports,
   exports, attachments, audit; Local Account: imports only from files — no network source offline;
@@ -714,8 +714,9 @@ Erase the Account; UC-45 View Instance Health (admin only).
   filters `From`, `To`, `FinancialAccountId`, `CreditCardId`, `CategoryId`, `TagId`, `CounterpartyId`,
   `Direction`, `MinimumAmount`, `MaximumAmount` (decimal strings), `Text`, `DisplayCurrencyCode`,
   `FigureDate` (A:OAS `GET /api/transactions`).
-- Paged output: `items`, `pageNumber`, `pageSize`, `totalItems`, `totalPages`, plus `totals` for
-  transaction search (A:OAS `TransactionSearchOutput`).
+- Paged output: only the transaction search returns `items` (with `pageNumber`, `pageSize`, `totalItems`,
+  `totalPages` and `totals`, A:OAS `TransactionSearchOutput`); other lists return `data` as an array with the
+  page fields (`pageNumber`, `pageSize`, `totalItems`, `totalPages`) beside it in the envelope.
 - Max page size `FORTUNA_PAGE_SIZE_MAX` (example 100) (A:docker/local.env.example).
 - Aggregate: `Dimension`, `Granularity`, `From`, `To`, `RollupCategories` + filters; drill-down: `Key`,
   `Dimension`; cash flow: `HorizonDays`, `DisplayCurrencyCode`, `IncludeEstimate`, `Periodicity` (A:OAS).

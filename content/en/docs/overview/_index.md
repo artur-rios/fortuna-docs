@@ -104,12 +104,12 @@ roles.
 | --- | --- |
 | **Account owner** | The everyday user. Records and reviews their own financial data, imports statements, connects banks, reads charts and projections. Sees only their own data. |
 | **Instance administrator** | Runs a shared instance: manages the instance and watches its operational health. Has no access to anybody's financial records, and the UI shows an administrator no financial data anywhere. |
-| **Desktop offline user** | An account owner on a Windows or Linux installation with no network and no identity provider reachable. Signs in with a local account and works against a local database. |
+| **Desktop offline user** | An account owner on a Windows or Linux installation with no network and no identity provider reachable. Signs in with a local account and works against a local database. The local-account screens are not reachable in the interface yet; see [What the interface does not cover yet](#what-the-interface-does-not-cover-yet). |
 
 The business rules behind the first two rows are
-[API-BR-01 and API-BR-02]({{< ref "/docs/concepts" >}}#ownership-and-isolation)
+[API-BR-01 and API-BR-02]({{< relref "/docs/concepts#ownership-and-isolation" >}})
 for the API and
-[UI-BR-21]({{< ref "/docs/concepts" >}}#ownership-and-isolation) for the
+[UI-BR-21]({{< relref "/docs/concepts#ownership-and-isolation" >}}) for the
 interface.
 
 ### Three ways to run it
@@ -164,8 +164,24 @@ means in practice.
   [#36](https://github.com/artur-rios/fortuna-ui/issues/36).
 - **The home screen is a placeholder.** The route `/` shows a screen titled
   Overview that is marked as implemented by UC-38; it is not a dashboard.
-- **There is no navigation menu in the code yet.** Screens are reached through
-  buttons on other screens.
+- **There is no navigation menu in the code yet.** Most screens have no link
+  from any other screen, so on the web they are opened by typing their address,
+  and the code has no control that opens them on Windows, Linux or Android. See
+  [There is no menu]({{< relref "/docs/user-guide#there-is-no-menu" >}}) in the
+  [User guide]({{< relref "/docs/user-guide" >}}).
+- **The desktop local-account screens and two-factor management have no route.**
+  The screens for creating a local account, signing in to it and recovering it
+  (UC-06, UC-07 and UC-08), and for managing two-factor authentication (UC-10),
+  are written and tested, but no route opens them and no screen links to them.
+  See
+  [Offline mode]({{< relref "/docs/user-guide/offline-mode#uc-06-create-a-desktop-local-account" >}})
+  and
+  [Settings]({{< relref "/docs/user-guide/settings#uc-10-manage-two-factor-authentication" >}})
+  in the [User guide]({{< relref "/docs/user-guide" >}}).
+- **The file-import screen sends only the file.** The API also requires a target
+  and, for a workbook, a column mapping. See
+  [Imports and connections]({{< relref "/docs/user-guide/imports#uc-32-import-a-file" >}})
+  (UC-32) in the [User guide]({{< relref "/docs/user-guide" >}}).
 - **Sign-up (UC-47) is on the `develop` branch but not in a release.** The UI
   changelog lists it under Unreleased.
 

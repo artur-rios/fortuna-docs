@@ -61,10 +61,10 @@ Heimdall and trusts the tokens it issues. The desktop offline account is the one
 exception.
 {{% /blocks/feature %}}
 
-{{% blocks/feature icon="fa-solid fa-scale-balanced" title="Licence" url="https://github.com/artur-rios/fortuna-api/blob/develop/LICENSE" %}}
+{{% blocks/feature icon="fa-solid fa-scale-balanced" title="License" url="https://github.com/artur-rios/fortuna-api/blob/develop/LICENSE" %}}
 The Artur Rios Attribution License: free and open source, so you may view, use,
 fork, modify and extend it, crediting the author. Both repositories carry the
-same licence, and the licence file has the terms.
+same license, and the license file has the terms.
 {{% /blocks/feature %}}
 
 {{% /blocks/section %}}
