@@ -18,7 +18,7 @@ milestones.
 | --- | --- | --- | --- |
 | [fortuna-api](https://github.com/artur-rios/fortuna-api) | The API, built with ASP.NET Core on .NET 10, and the native core in Rust (`native/`), with the committed OpenAPI document, the specification documents and the tests. | `develop` | [v2.1.0](https://github.com/artur-rios/fortuna-api/releases/tag/v2.1.0) |
 | [fortuna-ui](https://github.com/artur-rios/fortuna-ui) | The Flutter application for the web, Windows, Linux and Android that reads and writes through the API, with its specification documents. | `develop` | [v1.0.0](https://github.com/artur-rios/fortuna-ui/releases/tag/v1.0.0) |
-| [fortuna-docs](https://github.com/artur-rios/fortuna-docs) | This site: documentation only, no software and no package. The repository is created on GitHub when the site is first published. | `main`, the branch its Pages workflow publishes from | None |
+| [fortuna-docs](https://github.com/artur-rios/fortuna-docs) | This site: documentation only, no software and no package. | `main`, the branch its Pages workflow publishes from | None |
 
 Both code repositories mark those releases **Latest** on GitHub. The API's
 earlier release is
@@ -134,7 +134,7 @@ of truth, so this site does not repeat progress counts that would go stale. What
 the interface does not cover yet is under
 [Status]({{< relref "/docs/overview#status" >}}) on the Overview page.
 
-Each issue moves from its first status through In Progress and Testing to Done, and each
+Each issue moves from Todo through In Progress and Testing to Done, and each
 use case ships on its own branch, issue and pull request, as the Development
 Workflow Documents describe. The process is on the
 [Development]({{< relref "/docs/development" >}}) page.

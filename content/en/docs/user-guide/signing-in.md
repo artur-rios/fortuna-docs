@@ -59,15 +59,16 @@ until that is settled.
   this device only** under the words "Your data stays on this computer. No instance,
   no network." Pressing it enters offline mode. It is never offered on the web or on
   Android, nor on a desktop installation without the core library.
-- **When setup appears by itself.** A desktop build with no instance address built
-  in, and not made for offline mode, goes to setup first. A signed-out user can also
+- **When setup appears by itself.** A build with no instance address built in,
+  and not made for offline mode, goes to setup first. That holds for web and
+  Android builds as well as desktop ones. A signed-out user can also
   open `/setup` directly on any build, and nothing in the router redirects it away
   while no one is signed in.
 - **A build made for offline mode** (`FORTUNA_TRANSPORT_FFI`, the route the
   [Installation]({{< relref "/docs/installation#offline-mode-windows-and-linux" >}})
   page takes) starts directly in offline mode when the core loads. The instance
   counts as chosen, so setup is skipped and you go straight to sign-in.
-- **A wired build whose core will not load** does not start offline. If a built-in
+- **A build made for offline mode whose core will not load** does not start offline. If a built-in
   instance address exists, it starts in connected mode at that address and setup is
   not shown. If none is built in, it falls back to the setup screen, which says "This
   installation carries the Fortuna core but it could not be loaded, so offline mode

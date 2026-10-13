@@ -82,7 +82,7 @@ forward only, in order:
 
 | Order | Status | Set when |
 | --- | --- | --- |
-| 1 | **Tod&#111;** | The use case has not been started (the default). |
+| 1 | **Todo** | The use case has not been started (the default). |
 | 2 | **In Progress** | A branch has been created and implementation has begun. |
 | 3 | **Testing** | Implementation is finished; tests are being written, run and fixed until green. |
 | 4 | **Done** | The pull request has been reviewed and merged; the issue is closed. |
@@ -253,8 +253,8 @@ The UI is tested at three layers, separated by location.
 
 | Kind | What it covers | Where |
 | --- | --- | --- |
-| **Unit** | Repositories, providers and notifiers, form validators, formatters and money conversion, route guard rules. | `test/` mirroring `lib/` exactly. |
-| **Widget** | One screen with its providers overridden to fakes: its loading, loaded, empty and failed states, and each alternative flow with a visible outcome. | `test/features/<feature>/ui/`. |
+| **Unit** | Repositories, providers and notifiers, form validators, formatters and money conversion, route guard rules. | `test/`, in folders named after the areas of `lib/` (`app`, `core`, `features`, `shared`). Inside `test/features/`, tests sit directly in `test/features/<feature>/`. |
+| **Widget** | One screen with its providers overridden to fakes: its loading, loaded, empty and failed states, and each alternative flow with a visible outcome. | `test/features/<feature>/`, beside the unit tests of that feature (there is no `ui/` subfolder). |
 | **Integration** | A complete journey across screens against a stubbed API, for example sign in then record a transaction. Deliberately few. | `integration_test/`. The folder does not exist in the repository yet. |
 
 - **Naming.** A readable sentence, `Given … When … Then …`, with the parts
@@ -330,7 +330,7 @@ flutter test integration_test -d windows
 
 | What | Command |
 | --- | --- |
-| One file | `flutter test test/features/transactions/state/transaction_form_test.dart` |
+| One file | `flutter test test/features/transactions/record_transaction_test.dart` |
 | With coverage | `flutter test --coverage` |
 | Integration, Linux | `flutter test integration_test -d linux` |
 | Integration, web | `flutter test integration_test -d chrome` |
