@@ -4,3 +4,4 @@ docs/
 docs/overview/
 docs/concepts/
 about/
+docs/architecture/
