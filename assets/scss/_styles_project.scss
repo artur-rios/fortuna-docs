@@ -85,6 +85,20 @@
   }
 }
 
+// --- Links inside the primary band --------------------------------------------
+//
+// Docsy lightens links in coloured bands (`.td-box--primary p > a`), which is right for the dark and
+// secondary bands but leaves the landing page's lead paragraph with a pale blue, underlined
+// "Overview" link on the primary blue: about 2.1:1, and it is 24px text. White on the band is about
+// 4.5:1 and stays underlined, so it still reads as a link.
+.td-box--primary a:not(.btn) {
+  color: #fff;
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.85);
+  }
+}
+
 // --- Wide tables ----------------------------------------------------------
 //
 // Several reference tables (the endpoint listings, the environment-variable table) are wider than
