@@ -21,3 +21,5 @@ docs/user-guide/exports/
 docs/user-guide/deleted-records-and-audit/
 docs/user-guide/data-rights/
 docs/user-guide/offline-mode/
+docs/api/
+docs/api/explorer/
