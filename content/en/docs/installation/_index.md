@@ -19,6 +19,13 @@ The commands are copied from the repositories' own documentation
 every API setting, this page names the settings and links to the source for the
 values.
 
+{{% alert title="What runs end to end today" color="info" %}}
+In this version, signing in to the UI works only in connected (or self-hosted)
+mode, against a Fortuna API that is connected to a Heimdall reachable over HTTPS
+([Connecting to Heimdall](#connecting-to-heimdall)). Offline mode starts but
+cannot be signed into yet: see [Offline mode](#offline-mode-windows-and-linux).
+{{% /alert %}}
+
 ## Getting a release
 
 Read this section before looking for a download, because **there is nothing to
@@ -234,8 +241,9 @@ Android and desktop UI, when connected to an API, sign in through Fortuna's
 `/api/auth/*`, which signs in with Heimdall; the UI has no local sign-in for a
 connected instance. With the placeholder Heimdall settings of the local example, the API
 runs and answers, but a connected UI cannot sign in to it. To sign in, follow
-[Connecting to Heimdall](#connecting-to-heimdall). For a working UI without
-Heimdall, use [Offline mode](#offline-mode-windows-and-linux), which needs no API.
+[Connecting to Heimdall](#connecting-to-heimdall). [Offline mode](#offline-mode-windows-and-linux)
+needs no API, but it starts and cannot be signed into in this version (see
+[Create a Desktop Local Account]({{< relref "/docs/user-guide/offline-mode#uc-06-create-a-desktop-local-account" >}})).
 {{% /alert %}}
 
 The container serves on port `8080` inside (`API_PORT` is the host side) and
@@ -290,9 +298,10 @@ dotnet run --project src/Presentation/ArturRios.Fortuna.WebApi --no-launch-profi
 This instance signs in with the local account, which serves the API's own
 local-account endpoints. The UI, connected to an API, signs in through Fortuna's
 `/api/auth/*`, which signs in with Heimdall, instead (see the note under [Option A](#option-a-docker-compose)), so this
-instance is good for the API and Swagger UI. For a UI without Heimdall, use
-[Offline mode](#offline-mode-windows-and-linux). To sign in through Heimdall,
-see [Connecting to Heimdall](#connecting-to-heimdall).
+instance is good for the API and Swagger UI. [Offline mode](#offline-mode-windows-and-linux)
+needs no API either, but it starts and cannot be signed into in this version
+(see [Create a Desktop Local Account]({{< relref "/docs/user-guide/offline-mode#uc-06-create-a-desktop-local-account" >}})). To sign in through Heimdall, see
+[Connecting to Heimdall](#connecting-to-heimdall).
 
 - `ASPNETCORE_HTTP_PORTS` sets the port, and `--no-launch-profile` keeps the
   project's launch profiles out of the way (they use `http://localhost:0`).
@@ -393,8 +402,9 @@ Heimdall, so a connected run needs an API that
 is connected to a Heimdall over HTTPS ([Connecting to
 Heimdall](#connecting-to-heimdall)). An API run with the local example's
 placeholder Heimdall settings and the local account will start and answer, but
-the UI cannot sign in to it. Without Heimdall, use
-[Offline mode](#offline-mode-windows-and-linux).
+the UI cannot sign in to it. [Offline mode](#offline-mode-windows-and-linux)
+runs without an API, but it starts and cannot be signed into in this version
+(see [Create a Desktop Local Account]({{< relref "/docs/user-guide/offline-mode#uc-06-create-a-desktop-local-account" >}})).
 
 For a connected run, copy the example config and pass it to every run. The
 example points at the API of [Option A](#option-a-docker-compose), on
@@ -411,8 +421,8 @@ cp config/local.json.example config/local.json
 }
 ```
 
-`config/local.json` is git-ignored. **If your API is on another port, such as
-the `8083` you chose in Option B, or on another machine, edit
+`config/local.json` is git-ignored. **If your API is on another port or on
+another machine, edit
 `FORTUNA_API_BASE_URL` here**, or leave it empty and type the address at the
 setup screen.
 
@@ -487,9 +497,15 @@ Offline mode is offered only where the library loads. If the library is missing
 or will not load and no `FORTUNA_API_BASE_URL` is built in, the app falls back to
 the setup screen, where it reports the failure and offers to connect to an
 instance instead. With a `FORTUNA_API_BASE_URL` built in, the app starts
-connected at that address instead. Offline, the UI signs in
+connected at that address instead. Offline, the UI is meant to sign in
 with a local account that Fortuna owns instead of Heimdall: see
 [Offline: the local account]({{< relref "/docs/architecture#offline-the-local-account" >}}).
+
+**In this version the app stops at the sign-in screen.** No route opens the
+local-account screens, and the sign-in screen it shows is the connected form,
+whose request the core does not serve ("This is not available offline: POST
+/api/auth/login."). See [Create a Desktop Local Account]({{< relref "/docs/user-guide/offline-mode#uc-06-create-a-desktop-local-account" >}}).
+
 Some features are not available offline yet; the list is under
 [What offline mode does not support yet]({{< relref "/docs/architecture#what-offline-mode-does-not-support-yet" >}}).
 

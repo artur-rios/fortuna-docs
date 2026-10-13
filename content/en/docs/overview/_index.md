@@ -118,12 +118,13 @@ The UI runs in three shapes, and the interface is meant to be the same in all
 three.
 
 - **Connected.** Signed in through the Fortuna API against the shared identity
-  provider, talking to a remote instance. This is the normal path, and the only
-  one on the web and Android.
+  provider, talking to a remote instance. This is the normal path. Connected or
+  self-hosted are the only modes on the web and Android.
 - **Self-hosted.** The same experience, pointed at an instance you run yourself.
 - **Desktop offline.** Windows and Linux only, and only where the installation
   provides the Fortuna core library. The app calls the core in process, with no
-  network and no server.
+  network and no server. In this version the app starts but cannot be signed
+  into yet.
 
 The API supports two deployment shapes: a single self-hosted owner, or a shared
 instance with several registered users, each strictly isolated from the others.

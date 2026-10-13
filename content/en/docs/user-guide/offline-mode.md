@@ -29,8 +29,9 @@ this page shows where each item appears in the interface.
 
 ## What works
 
-Everything the core implements works as it does online, with no change to the
-screens. By reading the lists of what the core does not implement and does not export
+Once a local account can be reached (see UC-06 to UC-08 below, which are not
+reachable in this version), everything the core implements works as it does
+online, with no change to the screens. By reading the lists of what the core does not implement and does not export
 (see [Architecture]({{< relref "/docs/architecture" >}})), these work offline:
 
 - financial accounts, credit cards (but not their statements), investments with

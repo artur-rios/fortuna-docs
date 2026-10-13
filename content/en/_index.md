@@ -67,8 +67,9 @@ service, and each conversion records the rate and the date it used.
 
 {{% blocks/feature icon="fa-solid fa-laptop" title="Desktop offline mode" %}}
 On Windows and Linux the app can run against a local core with no network and no
-server. The core does not yet implement everything the API does, and the app
-labels what is unavailable offline instead of offering it.
+server. In this version the app starts but cannot be signed into yet. The core
+does not yet implement everything the API does, and the app labels what is
+unavailable offline instead of offering it.
 {{% /blocks/feature %}}
 
 {{% /blocks/section %}}
