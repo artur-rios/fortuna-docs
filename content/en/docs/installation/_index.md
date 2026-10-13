@@ -48,7 +48,7 @@ What you can get today:
 | Native core library | Built with Cargo ([Building the native core](#building-the-native-core)), or taken from a CI run of the `Native Core` workflow, below. |
 | UI | Clone [fortuna-ui](https://github.com/artur-rios/fortuna-ui) and follow [Running the UI](#running-the-ui). |
 | UI web container image | Built from the repository's `Dockerfile` ([Web container image](#web-container-image)). Not pushed to a registry either. |
-| UI builds for the web, Windows, Linux and Android | Raw build outputs from a CI run of the `Build` workflow, below. |
+| UI builds for the web, Windows, Linux and Android | Raw build outputs from a CI run of the `Build` workflow, below. Not confirmed to be usable as they are, see the notes below the table. |
 
 ### What CI keeps
 
@@ -58,11 +58,11 @@ files.
 | Workflow (file) | Runs on | Artifact name | Contents |
 | --- | --- | --- | --- |
 | [Native Core](https://github.com/artur-rios/fortuna-api/actions/workflows/native-core.yml) (`native-core.yml`, fortuna-api) | A push or pull request to `main` or `develop` that changes `native/**`, `docs/openapi/fortuna.json` or the workflow file | `fortuna-native-linux-x64` | `libfortuna_core.so` and the C header `fortuna_core.h` |
-| | | `fortuna-native-windows-x64` | `fortuna_core.dll` and the C header `fortuna_core.h` |
+| [Native Core](https://github.com/artur-rios/fortuna-api/actions/workflows/native-core.yml) (`native-core.yml`, fortuna-api) | Same as above | `fortuna-native-windows-x64` | `fortuna_core.dll` and the C header `fortuna_core.h` |
 | [Build](https://github.com/artur-rios/fortuna-ui/actions/workflows/build.yml) (`build.yml`, fortuna-ui) | A `v*` tag, or started by hand | `fortuna-ui-web` | `build/web` |
-| | | `fortuna-ui-android` | `app-release.apk` |
-| | | `fortuna-ui-windows` | `build/windows/x64/runner/Release` |
-| | | `fortuna-ui-linux` | `build/linux/x64/release/bundle` |
+| [Build](https://github.com/artur-rios/fortuna-ui/actions/workflows/build.yml) (`build.yml`, fortuna-ui) | Same as above | `fortuna-ui-android` | `app-release.apk` |
+| [Build](https://github.com/artur-rios/fortuna-ui/actions/workflows/build.yml) (`build.yml`, fortuna-ui) | Same as above | `fortuna-ui-windows` | `build/windows/x64/runner/Release` |
+| [Build](https://github.com/artur-rios/fortuna-ui/actions/workflows/build.yml) (`build.yml`, fortuna-ui) | Same as above | `fortuna-ui-linux` | `build/linux/x64/release/bundle` |
 
 Things to know before you use one:
 
@@ -77,8 +77,11 @@ Things to know before you use one:
   UI starts at its setup screen, where you type the address of an API. A browser
   build can only call an API on its own origin, as explained under
   [Web](#web).
-- **The Android APK is signed with the debug key.** The project's Gradle file
-  says it does that "for now", so that `flutter run --release` works.
+- **The Android APK is signed with the debug key**, which the project's Gradle
+  file says it does "for now", so that `flutter run --release` works. It has not
+  been confirmed that this CI release APK connects to an API. The UI README
+  documents running on Android with `flutter run -d <device>`, as under
+  [Android](#android).
 
 ## Running the API
 
@@ -105,8 +108,8 @@ cd fortuna-api
 
 ### Configuration
 
-The API reads its whole configuration from **environment variables** prefixed
-`FORTUNA_`, and nothing else. It does not read an `.env` file on its own: with
+The API reads its settings from **environment variables**, mostly prefixed
+`FORTUNA_` (plus the standard `ASPNETCORE_*` ones). It does not read an `.env` file on its own: with
 Docker Compose the variables come from the env file you pass to Compose, and
 from source they must be in the environment of the process. No secret is ever
 committed; the example files under `docker/` carry placeholders.
@@ -225,6 +228,16 @@ maps for the Docker engine on Linux.
    {"contractVersion":"v1","service":"Fortuna API"}
    ```
 
+{{% alert title="This local setup is not a way to sign in to the UI" color="warning" %}}
+The local account serves the API's own local-account endpoints and desktop
+offline mode. The web, Android and desktop UI, when connected to an API, sign in
+through Heimdall (`/api/auth/*`); the UI has no local sign-in for a connected
+instance. With the placeholder Heimdall settings of the local example, the API
+runs and answers, but a connected UI cannot sign in to it. To sign in, follow
+[Connecting to Heimdall](#connecting-to-heimdall). For a working UI without
+Heimdall, use [Offline mode](#offline-mode-windows-and-linux), which needs no API.
+{{% /alert %}}
+
 The container serves on port `8080` inside (`API_PORT` is the host side) and
 exposes the private metrics port `9464`, which Compose does not publish. The
 example file publishes `API_PORT` on every network interface, so that a phone on
@@ -272,6 +285,13 @@ export FORTUNA_LOCAL_AUTH_ENABLED=true
 export FORTUNA_METRICS_PORT=0
 dotnet run --project src/Presentation/ArturRios.Fortuna.WebApi --no-launch-profile
 ```
+
+This instance signs in with the local account, which serves the API's own
+local-account endpoints. The UI, connected to an API, signs in through Heimdall
+instead (see the note under [Option A](#option-a-docker-compose)), so this
+instance is good for the API and Swagger UI. For a UI without Heimdall, use
+[Offline mode](#offline-mode-windows-and-linux). To sign in through Heimdall,
+see [Connecting to Heimdall](#connecting-to-heimdall).
 
 - `ASPNETCORE_HTTP_PORTS` sets the port, and `--no-launch-profile` keeps the
   project's launch profiles out of the way (they use `http://localhost:0`).
@@ -353,7 +373,7 @@ flutter pub get
 ```
 
 A clone is on `develop`, which is ahead of the v1.0.0 release (it already has
-sign-up, UC-47). Check out the `v1.0.0` tag if you want the released UI.
+sign-up, UI UC-47). Check out the `v1.0.0` tag if you want the released UI.
 
 ### Build-time settings
 
@@ -366,6 +386,13 @@ compiled into the build, so they are **public**: never put a secret in one.
 | `FORTUNA_GOOGLE_CLIENT_ID` | The Google OAuth client id. Empty, Google sign-in is hidden. |
 | `FORTUNA_TRANSPORT_FFI` | `true` selects desktop offline mode (the core in process). Absent or `false`, the UI uses HTTP. |
 | `FORTUNA_DB_PATH` | Offline mode only: where the SQLite database file lives. |
+
+A connected UI signs in through Heimdall, so a connected run needs an API that
+is connected to a Heimdall over HTTPS ([Connecting to
+Heimdall](#connecting-to-heimdall)). An API run with the local example's
+placeholder Heimdall settings and the local account will start and answer, but
+the UI cannot sign in to it. Without Heimdall, use
+[Offline mode](#offline-mode-windows-and-linux).
 
 For a connected run, copy the example config and pass it to every run. The
 example points at the API of [Option A](#option-a-docker-compose), on
@@ -427,7 +454,7 @@ flutter run -d <your-device> --dart-define-from-file=config/local.json
 An Android emulator reaches the machine running the API at `http://10.0.2.2:8083`,
 so for an emulator set `FORTUNA_API_BASE_URL` to that. A physical device needs
 your machine's address on the network, and an API published on that interface.
-Android runs only in connected mode.
+Android runs only in connected mode, so it also needs a Heimdall-connected API.
 
 ### Offline mode (Windows and Linux)
 
@@ -537,7 +564,7 @@ To connect a Fortuna API to a Heimdall, carry these through in order.
    check them against your Heimdall.
 4. **Check Heimdall's version.** The caller key and
    self-registration came to Heimdall in API 1.4.0, according to Heimdall's
-   Integrating page. Self-registration (UC-81, new in Fortuna API 2.1.0) also
+   Integrating page. Self-registration (API UC-81, new in Fortuna API 2.1.0) also
    needs the scope to have opened self-registration in Heimdall; otherwise
    Fortuna answers `403`.
 5. **Point the UI at the API.** In the UI, set `FORTUNA_API_BASE_URL` (or type the

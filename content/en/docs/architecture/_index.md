@@ -305,8 +305,11 @@ flowchart LR
 - Offline mode is offered only on Windows and Linux, and only where the core
   library actually loads. It is never offered on the web or on Android
   ([UI-BR-25]({{< relref "/docs/concepts#identity-connected-and-local-accounts" >}})).
-- The database path is set at build time with `FORTUNA_DB_PATH`. It defaults to
-  beside the executable, so that a portable copy of the folder keeps its data.
+- The database path is set at build time with `FORTUNA_DB_PATH`, and it must
+  always be passed. The UI's specification says it defaults to beside the
+  executable, so that a portable copy of the folder keeps its data, but the code
+  does not do that: it passes the core an empty path, which the core rejects with
+  `400`. See [Offline mode]({{< relref "/docs/installation#offline-mode-windows-and-linux" >}}).
 - The user signs in with a local account that Fortuna owns, because there is no
   network to reach Heimdall over. See
   [Offline: the local account](#offline-the-local-account).
