@@ -554,9 +554,9 @@ works is in
 [Signing in through Heimdall]({{< relref "/docs/architecture#signing-in-through-heimdall" >}}).
 What a client system needs from Heimdall, and what Heimdall expects of it, is on
 Heimdall's own pages:
-[Integrating with Heimdall](https://artur-rios.github.io/heimdall-docs/docs/integrating/)
+[Integrating with Heimdall](https://docs.artur-rios.tech/heimdall-docs/docs/integrating/)
 and
-[Heimdall installation](https://artur-rios.github.io/heimdall-docs/docs/installation/).
+[Heimdall installation](https://docs.artur-rios.tech/heimdall-docs/docs/installation/).
 
 To connect a Fortuna API to a Heimdall, carry these through in order.
 

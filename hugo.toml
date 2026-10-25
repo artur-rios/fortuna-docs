@@ -1,4 +1,4 @@
-baseURL = "https://artur-rios.github.io/fortuna-docs/"
+baseURL = "https://docs.artur-rios.tech/fortuna-docs/"
 title = "Fortuna"
 # `locale`, not the deprecated `languageCode` (renamed in Hugo v0.158.0).
 locale = "en-us"
@@ -87,7 +87,7 @@ disableKinds = ["taxonomy", "term"]
       desc = "This site"
     [[params.links.user]]
       name = "Heimdall"
-      url = "https://artur-rios.github.io/heimdall-docs/"
+      url = "https://docs.artur-rios.tech/heimdall-docs/"
       icon = "fa-solid fa-shield-halved"
       desc = "The identity system Fortuna signs in through"
 
