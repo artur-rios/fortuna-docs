@@ -9,7 +9,10 @@ together, how to install it, how to use it, and what its API offers. The API
 reference page has an explorer that reads `fortuna.json` from fortuna-api's
 `main` branch.
 
-**[artur-rios.github.io/fortuna-docs](https://artur-rios.github.io/fortuna-docs/)**
+**[docs.artur-rios.tech/fortuna-docs](https://docs.artur-rios.tech/fortuna-docs/)**
+
+The repository lives at <https://git.techcraftsmen.net/artur-rios/fortuna-docs>; the copy on GitHub is a
+read-only mirror.
 
 This repository contains documentation only. It builds no software and ships no
 package.
@@ -26,13 +29,13 @@ package.
 
 **Requirements:** [Hugo extended](https://gohugo.io/installation/) 0.158 or
 newer — the configuration uses `locale` and `languages.*.label`, which arrived
-in that release; CI builds with 0.165.0 — the [Go toolchain](https://go.dev/dl/)
+in that release; the site image builds with 0.165.0 — the [Go toolchain](https://go.dev/dl/)
 — Docsy is consumed as a Hugo Module — and Node with npm, for Docsy's PostCSS
 pipeline. Python 3.11 or newer is needed only for the checks below (the checker
 imports `tomllib`).
 
 ```bash
-git clone https://github.com/artur-rios/fortuna-docs.git
+git clone https://git.techcraftsmen.net/artur-rios/fortuna-docs.git
 cd fortuna-docs
 npm ci
 hugo server
@@ -40,7 +43,7 @@ hugo server
 
 The site is then at <http://localhost:1313/fortuna-docs/>.
 
-To reproduce what CI builds:
+To reproduce what the image builds:
 
 ```bash
 hugo --minify
@@ -48,9 +51,10 @@ hugo --minify
 
 ## Checking it
 
-CI builds the site and then checks it: required pages exist, internal links and
-anchors resolve, Hugo printed no unexpected warnings, and no placeholder text
-is left. To run the same check locally:
+The site image builds the site and then checks it, and a site that fails the
+check is not deployed. The check is that required pages exist, internal links
+and anchors resolve, Hugo printed no unexpected warnings, and no placeholder
+text is left. To run the same check locally:
 
 ```bash
 hugo --minify 2>&1 | tee hugo.log && python scripts/check_site.py --public public --build-log hugo.log
@@ -86,7 +90,10 @@ fortuna-docs/
 │   └── required_pages.txt    # pages that must be built
 ├── LICENSE
 ├── .wakatime-project         # editor time-tracking project name
-└── .github/workflows/deploy.yml
+├── Dockerfile                # builds, checks and serves the site
+├── .dockerignore
+├── renovate.json             # dependency updates
+└── .gitattributes
 ```
 
 Content lives under `content/en/` so a `pt-BR` translation can be added
@@ -117,6 +124,19 @@ version is broken the same way v0.16.0 was, and the pin should stay.
 
 ## Deployment
 
-Every push to `main` builds the site and publishes it to GitHub Pages. Pages
-must be configured once, in the repository's Settings → Pages, with **Source**
-set to **GitHub Actions**.
+The site is deployed by Jenkins, from the yggdrasil pipeline: every push to
+`main` builds the `Dockerfile` and deploys the image to production, where it
+is served at <https://docs.artur-rios.tech/fortuna-docs/>. The image answers
+`/healthz` for the status check. The address comes from the build arguments
+`PUBLIC_HOST` and `PUBLIC_PATH`, which the deploy passes, so the `baseURL` in
+`hugo.toml` only matters for `hugo server`.
+
+To build the image locally:
+
+```bash
+docker build -t fortuna-docs \
+  --build-arg PUBLIC_HOST=docs.artur-rios.tech --build-arg PUBLIC_PATH=/fortuna-docs .
+docker run --rm -p 8080:8080 fortuna-docs
+```
+
+The site is then at <http://localhost:8080/fortuna-docs/>.
