@@ -71,7 +71,7 @@ These are deliberate exclusions, not features that are still to come.
 - **It does not store bank credentials.** Open-banking access lives with Pluggy
   and is referenced by token.
 - **It does not manage users.** Identity belongs to
-  [Heimdall](https://artur-rios.github.io/heimdall-docs/). The one exception is
+  [Heimdall](https://docs.artur-rios.tech/heimdall-docs/). The one exception is
   the desktop offline account, which Fortuna owns because there is no network to
   reach Heimdall over.
 - **The API does not render a user interface.** It serves the numbers and the

@@ -54,7 +54,7 @@ interface is still being completed.
 
 {{% blocks/section color="light" type="row" %}}
 
-{{% blocks/feature icon="fa-solid fa-shield-halved" title="Signs in through Heimdall" url="https://artur-rios.github.io/heimdall-docs/" %}}
+{{% blocks/feature icon="fa-solid fa-shield-halved" title="Signs in through Heimdall" url="https://docs.artur-rios.tech/heimdall-docs/" %}}
 In connected mode, identity is not Fortuna's. Fortuna is a client system of
 Heimdall, the identity service from the same author, and it forwards sign-in to
 Heimdall and trusts the tokens it issues. The desktop offline account is the one

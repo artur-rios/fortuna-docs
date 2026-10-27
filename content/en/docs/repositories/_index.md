@@ -38,7 +38,7 @@ or package exists yet. What you can build or take from CI instead is in
 
 The documentation of each code repository is on its default branch, `develop`,
 and the links below use it. Related projects are
-[Heimdall](https://artur-rios.github.io/heimdall-docs/), the identity provider
+[Heimdall](https://docs.artur-rios.tech/heimdall-docs/), the identity provider
 Fortuna signs in through (its repositories are
 [heimdall-api](https://github.com/artur-rios/heimdall-api) and
 [heimdall-ui](https://github.com/artur-rios/heimdall-ui)), and

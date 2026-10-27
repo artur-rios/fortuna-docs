@@ -461,9 +461,9 @@ sequenceDiagram
   is short by default.
 
 To set up the identity side, see Heimdall's own documentation:
-[Integrating with Heimdall](https://artur-rios.github.io/heimdall-docs/docs/integrating/)
+[Integrating with Heimdall](https://docs.artur-rios.tech/heimdall-docs/docs/integrating/)
 for what a client system needs, and
-[Heimdall architecture](https://artur-rios.github.io/heimdall-docs/docs/architecture/)
+[Heimdall architecture](https://docs.artur-rios.tech/heimdall-docs/docs/architecture/)
 for how Heimdall is built.
 
 ### Offline: the local account
