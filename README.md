@@ -1,5 +1,11 @@
 # fortuna-docs
 
+> [!NOTE]
+> This is the real, open-source code of fortuna-docs. Its home is Forgejo, at
+> https://git.techcraftsmen.net/artur-rios/fortuna-docs; the copy on GitHub is a read-only mirror, for viewing only, and
+> its issues and pull requests are not followed. If you want to contribute, email me at
+> arturdev@duck.com.
+
 The home page and documentation portal for
 [Fortuna](https://github.com/artur-rios/fortuna-api), a personal finance system
 that tracks your whole financial life in one place and turns it into tables,
