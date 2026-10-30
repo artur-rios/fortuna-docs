@@ -1,11 +1,5 @@
 # fortuna-docs
 
-> [!NOTE]
-> This is the real, open-source code of fortuna-docs. Its home is Forgejo, at
-> https://git.techcraftsmen.net/artur-rios/fortuna-docs; the copy on GitHub is a read-only mirror, for viewing only, and
-> its issues and pull requests are not followed. If you want to contribute, email me at
-> arturdev@duck.com.
-
 The home page and documentation portal for
 [Fortuna](https://github.com/artur-rios/fortuna-api), a personal finance system
 that tracks your whole financial life in one place and turns it into tables,
@@ -16,9 +10,6 @@ reference page has an explorer that reads `fortuna.json` from fortuna-api's
 `main` branch.
 
 **[docs.artur-rios.tech/fortuna-docs](https://docs.artur-rios.tech/fortuna-docs/)**
-
-The repository lives at <https://git.techcraftsmen.net/artur-rios/fortuna-docs>; the copy on GitHub is a
-read-only mirror.
 
 This repository contains documentation only. It builds no software and ships no
 package.
@@ -153,3 +144,8 @@ docker run --rm -p 8080:8080 fortuna-docs
 ```
 
 The site is then at <http://localhost:8080/fortuna-docs/>.
+
+## Contributing
+
+The GitHub repository is a read-only mirror for the real, open-source code of fortuna-docs. Its home is Forgejo, at
+https://git.techcraftsmen.net/artur-rios/fortuna-docs. If you want to contribute, e-mail me at arturdev@duck.com.
